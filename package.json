@@ -5,8 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "test": "npx jest --coverage",
-    "lint": "npx eslint src/"
+    "test": "node_modules/.bin/jest --coverage",
+    "lint": "node_modules/.bin/eslint src/"
   },
   "keywords": ["aws", "codebuild", "codepipeline", "ci-cd"],
   "author": "",
