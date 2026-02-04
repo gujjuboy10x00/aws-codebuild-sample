@@ -1,0 +1,63 @@
+version: 0.2
+
+# Environment variables can be set here or in CodeBuild project settings
+env:
+  variables:
+    NODE_ENV: "production"
+  # parameter-store:
+  #   API_KEY: /myapp/api-key
+  # secrets-manager:
+  #   DB_PASSWORD: prod/db:password
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies..."
+      - npm install
+
+  pre_build:
+    commands:
+      - echo "Running pre-build checks..."
+      - echo "Build started at $(date)"
+      - echo "Running linter..."
+      - npm run lint || true
+
+  build:
+    commands:
+      - echo "Build phase started..."
+      - echo "Running tests..."
+      - npm test
+      - echo "Build completed successfully at $(date)"
+
+  post_build:
+    commands:
+      - echo "Post-build phase..."
+      - echo "Build artifacts ready"
+      - |
+        if [ $CODEBUILD_BUILD_SUCCEEDING -eq 1 ]; then
+          echo "Build succeeded!"
+        else
+          echo "Build failed!"
+          exit 1
+        fi
+
+# Artifacts to be uploaded to S3 or used by CodePipeline
+artifacts:
+  files:
+    - '**/*'
+  name: build-output-$(date +%Y%m%d-%H%M%S)
+
+# Cache dependencies to speed up subsequent builds
+cache:
+  paths:
+    - 'node_modules/**/*'
+
+# Reports for test results and code coverage
+reports:
+  test-results:
+    files:
+      - 'coverage/lcov-report/**/*'
+    file-format: 'CLOVERXML'
+    base-directory: 'coverage'

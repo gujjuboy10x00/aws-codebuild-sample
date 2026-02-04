@@ -1,0 +1,22 @@
+{
+  "name": "aws-codebuild-sample",
+  "version": "1.0.0",
+  "description": "Sample Node.js application for AWS CodeBuild and CodePipeline testing",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "jest --coverage",
+    "lint": "eslint src/"
+  },
+  "keywords": ["aws", "codebuild", "codepipeline", "ci-cd"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "eslint": "^8.40.0",
+    "supertest": "^6.3.3"
+  }
+}
